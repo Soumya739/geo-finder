@@ -1,11 +1,31 @@
+let geocoder;
+const SUMMARY_DATA = {}
 
-const URL = `https://www.google.com/maps/embed/v1/streetview?location=47.6094421,-122.3359409=AIzaSyDkGbD7qHuZq_WyAmnH15854cbm3h5bTlc`
+// const URL = `https://www.google.com/maps/embed/v1/streetview?location=47.6094421,-122.3359409=AIzaSyDkGbD7qHuZq_WyAmnH15854cbm3h5bTlc`
 
-let sv;
+// let sv;
 
 document.addEventListener('DOMContentLoaded',() => {
     newViewClickListener();
 })
+
+
+
+
+function codeLatLng(lat, lng) {
+    geocoder = new google.maps.Geocoder();
+    let latlng = new google.maps.LatLng(lat, lng);
+    geocoder.geocode({
+      'latLng': latlng
+    }, function (results, status) {
+      if (status === google.maps.GeocoderStatus.OK) {
+        if (results[1]) {
+          let address = results[1].formatted_address;
+          console.log(address);
+        } 
+      }
+    });
+  }
 
 
 
@@ -22,6 +42,7 @@ function TryRandomLocation(callback) {
     console.log('2')
     var lat = getRandomInRange(-90,90,1);
     var lng = getRandomInRange(-180,180,1);
+    console.log(`lat: ${lat}, lng: ${lng}`)
     sv = new google.maps.StreetViewService();
     console.log('sv',sv)
   
@@ -29,13 +50,15 @@ function TryRandomLocation(callback) {
     sv.getPanorama({
         
         location: new google.maps.LatLng(lat,lng),
-        radius: 200000
+        radius: 900000,
+        source: google.maps.StreetViewSource.OUTDOOR
     }, callback);
   }
   
   function HandleCallback(data, status) {
       console.log('3')
       if (status === 'OK') {
+        console.log('data',data)
         let streetViewImage =  document.getElementById('street-view-image');
         console.log('4')  
         console.log('data length', data.length)
@@ -45,8 +68,10 @@ function TryRandomLocation(callback) {
         console.log('longitude', longitude)
         new_coordinates = `${latitude},${longitude}`
         streetViewImage.src = `https://www.google.com/maps/embed/v1/streetview?key=AIzaSyDkGbD7qHuZq_WyAmnH15854cbm3h5bTlc&location=${latitude},${longitude}&heading=210&pitch=10&fov=35`
-        
-        
+        codeLatLng(latitude, longitude)
+        SUMMARY_DATA.actual_lat = latitude
+        SUMMARY_DATA.actual_lng = longitude
+        console.log(SUMMARY_DATA)
 
       } else {
         console.log('5')
@@ -55,12 +80,7 @@ function TryRandomLocation(callback) {
       }
   }
 
-  function changeView(coordinates){
-       let URL = ``
-       let newViewButton = document.getElementById('new-view-button');
-    //   newViewButton.src = 
-
-  }
+ 
   
   function newViewClickListener(){
       let newViewButton = document.getElementById('new-view-button');
