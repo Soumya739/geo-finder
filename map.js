@@ -18,10 +18,9 @@ function initMap(){
         zoom: 2
       });
     google.maps.event.addListener(map, 'click', function(event) {
-            let latitude = event.latLng.lat();
-            let longitude = event.latLng.lng();
-            hasClicked = true;
-            console.log(latitude + ', ' + longitude);
+            let latitude = Math.floor(event.latLng.lat());
+            let longitude = Math.floor(event.latLng.lng());
+            findAddress(latitude, longitude);
             placeMarker(event.latLng);
     });
 }
@@ -49,6 +48,10 @@ function createButtons(){
         compareCoordinates();
     })
     buttonsDiv.append(skip, submit);
+}
+
+function findAddress(lat, lng){
+    console.log('latitude', lat,'longitude', lng)
 }
 
 function showNextImage(){
