@@ -1,9 +1,5 @@
 let geocoder;
-const SUMMARY_DATA = {}
-
-// const URL = `https://www.google.com/maps/embed/v1/streetview?location=47.6094421,-122.3359409=AIzaSyDkGbD7qHuZq_WyAmnH15854cbm3h5bTlc`
-
-// let sv;
+const SUMMARY_DATA = {};
 
 document.addEventListener('DOMContentLoaded',() => {
     newViewClickListener();
@@ -40,34 +36,48 @@ function getRandomInRange(from, to, fixed) {
 
 function TryRandomLocation(callback) {
     console.log('2')
-    var lat = getRandomInRange(-90,90,1);
-    var lng = getRandomInRange(-180,180,1);
+    let lat = getRandomInRange(-90,90,1);
+    let lng = getRandomInRange(-180,180,1);
     console.log(`lat: ${lat}, lng: ${lng}`)
     sv = new google.maps.StreetViewService();
     console.log('sv',sv)
-  
-    // Try to find a panorama within 50 metres 
     sv.getPanorama({
         
         location: new google.maps.LatLng(lat,lng),
         radius: 900000,
-        source: google.maps.StreetViewSource.OUTDOOR
+        source: google.maps.StreetViewSource.OUTDOOR,
+        
+
     }, callback);
   }
   
   function HandleCallback(data, status) {
       console.log('3')
       if (status === 'OK') {
-        console.log('data',data)
-        let streetViewImage =  document.getElementById('street-view-image');
-        console.log('4')  
-        console.log('data length', data.length)
         let latitude = data.location.latLng.lat()
         console.log('latitude',latitude)
         let longitude = data.location.latLng.lng()
         console.log('longitude', longitude)
-        new_coordinates = `${latitude},${longitude}`
-        streetViewImage.src = `https://www.google.com/maps/embed/v1/streetview?key=AIzaSyDkGbD7qHuZq_WyAmnH15854cbm3h5bTlc&location=${latitude},${longitude}&heading=210&pitch=10&fov=35`
+        let panorama = new google.maps.StreetViewPanorama(
+            document.getElementById('pano'), {
+              
+              visible: false
+        });
+
+        panorama.setOptions({
+            disableDefaultUI: true,
+            panControl: true,
+            zoomControl: true,
+            showRoadLabels: false,
+            streetViewControl: true
+        })
+        let latLng = new google.maps.LatLng(latitude, longitude)
+        console.log('lat long', latLng)
+        panorama.setPano(data.location.pano)
+
+
+        panorama.setVisible(true);
+        console.log("panorama:",panorama)
         codeLatLng(latitude, longitude)
         SUMMARY_DATA.actual_lat = latitude
         SUMMARY_DATA.actual_lng = longitude
@@ -90,7 +100,3 @@ function TryRandomLocation(callback) {
 
 
   }
-    
-  
-
-

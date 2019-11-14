@@ -7,8 +7,11 @@
     <style>
       /* Always set the map height explicitly to define the size of the div
        * element that contains the map. */
-      #map {
-        height: 100%;
+      #pano {
+        height: 35%;
+        width: 35%;
+        margin-top: 5em;
+        margin-left: 5em;
       }
       /* Optional: Makes the sample page fill the window. */
       html, body, div {
@@ -18,15 +21,15 @@
       }
     </style>
   </head>
-  <body>
-        <div id="map">
-            <iframe id="street-view-image" width="600" height="450" frameborder="2" style="border:0" src="https://www.google.com/maps/embed/v1/streetview?key=AIzaSyDkGbD7qHuZq_WyAmnH15854cbm3h5bTlc&location=46.414382,10.013988&heading=210&pitch=10&fov=35" >
-            </iframe>
+  <body >
+        <div width="100" height="100" frameborder="2" style="border:0">
+            <div id="pano" width="100" height="100" frameborder="2" style="border:0" >
+            </div>
             <button id='new-view-button'>New View</button>
         </div>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDkGbD7qHuZq_WyAmnH15854cbm3h5bTlc"
+    <script src="https://maps.googleapis.com/maps/api/js?key=API_KEY"
     async defer></script>
-    <script type="text/javascript" src='main.js'></script>
+    <script type="text/javascript" src='street_view.js' defer></script>
   </body>
 </html>
 
