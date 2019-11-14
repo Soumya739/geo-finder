@@ -6,12 +6,14 @@ let LATA;
 let LNGA;
 let LATB;
 let LNGB;
-let geocoder;
+
+document.addEventListener('DOMContentLoaded',() => {
+    playGame();
+})
 
 
 // ** 1
 function playGame(){
-    console.log("In Cha's file")
     let play = document.getElementById('play');
     play.addEventListener('click', (ev) => {
         ev.preventDefault();
@@ -58,38 +60,46 @@ function placeMarker(location) {
     }
 }
 
-function eventListenersTo(){
-    let skip = document.getElementById('skip-button');
+function createButtons(){
+    let buttonsDiv = document.getElementById('buttons');
+    let skip = document.createElement('button');
+    skip.id = "skip"
+    skip.textContent = "Skip";
     skip.addEventListener('click', (ev) => {
         ev.preventDefault();
         showNextImage();
     })
-    let submit = document.getElementById('submit-button');
+    let submit = document.createElement('button');
+    submit.id = "submit"
+    submit.textContent = "Submit";
     submit.addEventListener('click', (ev) => {
         ev.preventDefault();
         compareCoordinates();
     })
+    buttonsDiv.append(skip, submit);
 }
+
+let geocoder;
 
 // ** ADDRESS
 function initialize() {
-    geocoder = new google.maps.Geocoder();
+  geocoder = new google.maps.Geocoder();
 }
-  
+
 function codeLatLng(lat, lng) {
-    let latlng = new google.maps.LatLng(lat, lng);
-    geocoder.geocode({
-        'latLng': latlng
-    }, function (results, status) {
-        if (status === google.maps.GeocoderStatus.OK) {
-        if (results[1]) {
-            let address = results[1].formatted_address;
-            ADDRESS_ARRAY.push(address);
-            LATA = lat;
-            LNGA = lng;
-        } 
-        }
-    });
+  let latlng = new google.maps.LatLng(lat, lng);
+  geocoder.geocode({
+    'latLng': latlng
+  }, function (results, status) {
+    if (status === google.maps.GeocoderStatus.OK) {
+      if (results[1]) {
+        let address = results[1].formatted_address;
+        ADDRESS_ARRAY.push(address);
+        LATA = lat;
+        LNGA = lng;
+      } 
+    }
+  });
 }
 
 function showNextImage(){

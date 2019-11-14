@@ -1,7 +1,7 @@
 console.log("user.js")
 let USER_ID = ""
 let ALL_USERS = []
-let POINTS = 0
+let T_POINTS = 0
 
 function addNewUser(email){
     fetchAllUsers()
@@ -34,7 +34,7 @@ function getUser(email){
 
 function afterLogIn(user){
     USER_ID = user.id
-    POINTS = user.points
+    T_POINTS = user.points
     hideEachDisplay(CSS_ID_ARRAY)
     onlyDisplay(["after-login-navbar", "after-login","display-start"])
     displayUsername(user)
@@ -43,11 +43,11 @@ function afterLogIn(user){
 
 function displayUsername(user){
     let displayedUser = document.getElementById("user")
-    displayedUser.textContent = `||**~~~ ${user.email} ~~~**||`
+    displayedUser.textContent = `|| ${user.email} ||`
 }
 function displayedUserPoints(user){
     let displayedUserPoints = document.getElementById("points")
-    displayedUserPoints.textContent = `||**~~~ Points:${POINTS} ~~~**||`
+    displayedUserPoints.textContent = `|| Points:${T_POINTS} ||`
 }
 
 function createNewUserFetchRequest(){

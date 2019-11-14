@@ -80,7 +80,7 @@ function deleteSummaryRquest(summariesArray){
 }
 
 function deleteUserPoints(){
-    POINTS = 00
+    T_POINTS = 00
     fetch(USERS_URL +'/'+ USER_ID, {
         method: "PATCH",
         headers: {
@@ -88,7 +88,7 @@ function deleteUserPoints(){
             Accepts: "application/json"
         },
         body: JSON.stringify({
-            points: POINTS
+            points: T_POINTS
         })
     })
     .then(resp => resp.json())

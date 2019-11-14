@@ -1,17 +1,20 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
-    <meta charset="utf-8" />
     <title>Geo Finder</title>
+    <meta name="viewport" content="initial-scale=1.0">
+    <meta charset="utf-8" />
     <link rel="stylesheet" href="styles.css" />
     <script src="./src/index.js"></script>
     <script src="./src/user.js"></script>
     <script src="./src/main.js"></script>
     <script src="./src/userSummary.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDkGbD7qHuZq_WyAmnH15854cbm3h5bTlc"></script>
+    <script src="./src/actualMap.js" ></script>
+    <script id="google-API" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDkGbD7qHuZq_WyAmnH15854cbm3h5bTlc&libraries=geometry&sensor=false"></script>
     <script src="./src/streetMap.js"></script>
-    <script src="./src/actualMap.js"></script>
-    
   </head>
+
   <body>
     <header class="header">
       <div id="nav-bar">
@@ -20,7 +23,7 @@
         </div>
         <div id="after-login-navbar">
             <div class="nav-content">
-                <div id="play">||**~~~ play ~~~*||</div>
+                <div id="play">|| play ||</div>
             </div>
             <div class="nav-content">
                 <div id="user">User</div>
@@ -29,10 +32,10 @@
                 <div id="points">Points</div>
             </div>
             <div class="nav-content">
-                <div id="summary">||**~~~ Summary ~~~**||</div>
+                <div id="summary">|| Summary ||</div>
             </div>
             <div class="nav-content">
-                <div id="logout">||**~~~ Logout ~~~*||</div>
+                <div id="logout">|| Logout ||</div>
             </div>
         </div>
       </div>
@@ -55,17 +58,22 @@
                 </form>
             </div>
         </div>
+        
         <div id="after-login">
             <div id="display-start">
                 <div>Start</div>
             </div>
             <div id="display-Summary"></div>
-            <div id="display-maps">
-                <div id="street-view-mapImage"></div>
-                <div id="actualMap"></div>
-            </div>
         </div>
     </main>
+    
+    <div id="pano"></div>
 
+    <div id="map"></div>
+    <div id="answer"></div>
+    <div id="mapPageButtons">
+        <button id='submit-button' style="bottom: 40px;">Submit</button>
+        <button id='skip-button' style="bottom: 30px;">Skip</button>
+    </div>
   </body>
 </html>

@@ -66,3 +66,18 @@ function startGame(){
     })
 }
 
+function startClickListener(){
+    let startDiv = document.getElementById('display-start');
+    startDiv.addEventListener('click', (ev) => {
+        ev.preventDefault();
+        console.log("Started")
+        
+        TryRandomLocation(HandleCallback);
+        playGame();
+        hideEachDisplay(CSS_ID_ARRAY)
+        onlyDisplay(["after-login-navbar", "after-login", "mapPageButtons"])
+        // let submitButton = document.getElementById("submit-button")
+        // submitButton.style.display = "block"
+    })
+}
+
