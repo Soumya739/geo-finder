@@ -1,0 +1,44 @@
+body {
+    background-color: #CCFFFF;
+    background-image: "url('./assets/world-map.jpg')";
+  }
+.header {
+    padding: 5px;
+    text-align: center;
+    background: #1abc9c;
+    color: white;
+    font-size: 20px;
+}
+#before-login {
+    display:block;
+}
+#after-login-navbar {
+    display:none;
+}
+.nav-bar {
+    display:inline-block
+}
+.nav-content {
+    display:inline-block;
+}
+
+.sign-in-user, .sign-up-user {
+    display:inline-block;
+    font-size : 30px;
+    margin: 20px;
+
+}
+
+#after-login {
+    display:block;
+}
+
+#display-start, #display-Summary, #display-maps {
+    display:none;
+}
+
+#user, #sign-in{
+    display:inline-block
+}
+
+
