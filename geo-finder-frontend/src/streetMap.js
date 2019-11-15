@@ -1,5 +1,6 @@
 let GEO_CODER;
 const SUMMARY_DATA = {};
+let PANO_ID;
 
 function codeLatLng(lat, lng) {
     GEO_CODER = new google.maps.Geocoder();
@@ -31,7 +32,7 @@ function TryRandomLocation(callback) {
     // console.log('sv',sv)
     sv.getPanorama({
         location: new google.maps.LatLng(lat,lng),
-        radius: 900000,
+        radius: 300000,
         source: google.maps.StreetViewSource.OUTDOOR,
     }, callback);
 }
@@ -61,7 +62,7 @@ function TryRandomLocation(callback) {
         // console.log('lat long', latLng)
         panorama.setPano(data.location.pano)
 
-
+        PANO_ID = data.location.pano
         panorama.setVisible(true);
         // console.log("panorama:",panorama)
         codeLatLng(latitude, longitude)
@@ -76,3 +77,5 @@ function TryRandomLocation(callback) {
       }
       console.log("Done With Dan's code")
   }
+
+ 

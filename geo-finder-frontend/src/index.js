@@ -12,6 +12,8 @@ document.addEventListener("DOMContentLoaded", () =>{
     playButton();
     startGame();
     startClickListener();
+    nextMapButton();
+    submitMapGuess();
 });
 
 
