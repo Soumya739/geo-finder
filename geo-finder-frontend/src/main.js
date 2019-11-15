@@ -8,7 +8,6 @@ function displaySigninForm(){
         ev.preventDefault();
         email = emailDom.value
         EMAIL = email
-        console.log("in signin",email)
         getUser(email)
     } )
 }
@@ -20,7 +19,6 @@ function displaySignupForm(){
         ev.preventDefault();
         email = emailDom.value
         EMAIL = email
-        console.log("in signup",email)
         addNewUser(email)
     } )
 }
@@ -52,32 +50,21 @@ function playButton(){
     let playDiv = document.getElementById("play");
     playDiv.addEventListener("click", (ev) => {
         ev.preventDefault();
-        console.log(EMAIL)
+        console.log(EMAIL);
+        MARKERA = null;
         getUser(EMAIL)
-    })
-}
-
-function startGame(){
-    let displayStartDiv = document.getElementById("display-start");
-    displayStartDiv.addEventListener("click", (ev) => {
-        ev.preventDefault();
-        hideEachDisplay(CSS_ID_ARRAY)
-        onlyDisplay(["after-login-navbar"])
     })
 }
 
 function startClickListener(){
     let startDiv = document.getElementById('display-start');
-    startDiv.addEventListener('click', (ev) => {
-        ev.preventDefault();
+    startDiv.addEventListener('click', () => {
         console.log("Started")
         
         TryRandomLocation(HandleCallback);
         initMap();
         hideEachDisplay(CSS_ID_ARRAY)
-        onlyDisplay(["after-login-navbar", "after-login", "mapPageButtons"])
-        // let submitButton = document.getElementById("submit-button")
-        // submitButton.style.display = "block"
+        onlyDisplay(["after-login-navbar", "after-login", "mapPageButtons", "pano", "map"])
     })
 }
 
@@ -85,6 +72,7 @@ function nextMapButton(){
     let nextButton = document.getElementById('skip-button');
     nextButton.addEventListener('click', () => {
         refreshThePageWithNewStreetMap();
+        document.getElementById('submit-button').style.display ="none";
         MARKERA = null
     })
 }
@@ -123,7 +111,9 @@ function submitMapGuess(){
         });
         panorama.setPano(PANO_ID)
         getDistanceFromLatLonInKm(SUMMARY_DATA.input_lat, SUMMARY_DATA.input_lng, SUMMARY_DATA.actual_lat, SUMMARY_DATA.actual_lat)
-        
+        addSummaryInDatabase(SUMMARY_DATA)
+        submit.style.display = "none"
+
     })
 
 }

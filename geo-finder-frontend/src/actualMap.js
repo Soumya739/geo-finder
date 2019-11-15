@@ -52,6 +52,8 @@ function codeLatitudeLng(lat, lng) {
    }
 
 function placeMarker(location) {
+    let submit = document.getElementById('submit-button');
+    submit.style.display = "block"
     console.log("5: placeMarker")
     if(MARKERA){
         MARKERA.setPosition(location);
@@ -68,11 +70,14 @@ function placeMarker(location) {
 function compareCoordinates(){
     console.log("6: compareCoordinates")
     let answerDiv = document.getElementById('answer');
-    let answer = document.createElement('p');
-    answer.textContent = "Your guess is in " + ADDRESS_ARRAY;
+    answerDiv.style.display = "block"
+    let answerP = document.createElement('p');
+    answerP.textContent = "Your guess is in " + ADDRESS_ARRAY;
+    setTimeout(function(){ answerDiv.style.display = "none"}, 7000);
+    setTimeout(removeAnswerP(), 8000);
     
     
-    answerDiv.appendChild(answer);
+    answerDiv.appendChild(answerP);
     SUMMARY_DATA.input_lat = MARKERA.position.lat();
     SUMMARY_DATA.input_lng = MARKERA.position.lng();
     console.log(MARKERA.position.lat(), MARKERA.position.lng());
@@ -99,5 +104,12 @@ function refreshThePageWithNewStreetMap(){
     console.log("8: refreshThePageWithNewStreetMap")
     TryRandomLocation(HandleCallback);
     initMap();
+}
+
+function removeAnswerP(){
+    let answerDiv = document.getElementById('answer');
+    while (answerDiv.firstChild) {
+        answerDiv.firstChild.remove()
+    }
 }
 

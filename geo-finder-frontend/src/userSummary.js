@@ -2,77 +2,66 @@ console.log("userSummary")
 const GET_SUMMARY_URL = `${BASE_URL}/getSummaryOfUser`;
 
 
-
-
-//  get summaryData from Map.js?
-let CLICK_CHECK = new Set([])
-
 function viewSummary(){
     let summaryDiv = document.getElementById("summary")
     summaryDiv.addEventListener('click', (ev)=>{
         ev.preventDefault();
-        console.log(USER_ID)
-        getUserSummary(USER_ID)
+        // if (!CLICK_CHECK.has("summary-view-button")){
+        //     CLICK_CHECK.add("summary-view-button")
+            getUserSummary(USER_ID)
+        // } 
     })
-}
-
-function addSummary(SUMMARY_DATA){
-    fetch(SUMMARIES_URL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "Application/json",
-          Accept: "Application/json"
-        },
-        body: JSON.stringify({
-            user_id: USER_ID,
-            input_lat: SUMMARY_DATA.input_lat,
-            input_lng: SUMMARY_DATA.input_lng,
-            actual_lat: SUMMARY_DATA.actual_lat,
-            actual_lng: SUMMARY_DATA.actual_lng,
-            points: points
-        })
-      })
-      .then(response => response.json())
-      .then(updatedPoints => updatePoints(updatedPoints))
-}
-
-function updatePoints(updatedPoints){
-    let displayedUserPoints = document.getElementById("points")
-    displayedUserPoints.textContent = updatedPoints.points
 }
 
 function getUserSummary(userId){
     console.log(userId)
-
     return fetch(GET_SUMMARY_URL + "/" + userId)
-      .then(response => response.json())
-      .then(summaries => {
-            createSummaryDiv(summaries)
+    .then(response => response.json())
+    .then(summaries => {
+        viewAndDeleteSummary(summaries)
         })
 }
 
-function createSummaryDiv(summaries){
+function viewAndDeleteSummary(summaries){
     console.log(summaries)
-    let displaySummaryDiv = document.getElementById("display-Summary")
-    let deleteUserSummeries = document.createElement("button")
-    deleteUserSummeries.textContent = "Clear Summary"
-    deleteUserSummeries.addEventListener('click', (ev)=>{
-        ev.preventDefault();
-        
+    let summaryOl = document.getElementById("summaries-ol")
+    let deleteUserSummeries = document.getElementById("summary-delete-button")
+    deleteUserSummeries.style.display = "block"
+    deleteUserSummeries.addEventListener('click', ()=>{
         deleteSummaryRquest(summaries)
         deleteUserPoints()
-        while (displaySummaryDiv.firstChild) {
-            displaySummaryDiv.firstChild.remove()
+        while (summaryOl.firstChild) {
+            summaryOl.firstChild.remove()
         }
-        let summaryDiv = document.createElement("div")
-        summaryDiv.textContent = "Summary Deleted!!"
-        displaySummaryDiv.append(summaryDiv)
-        displaySummaryDiv.prepend(deleteUserSummeries)
-        
+        let summaryDiv = document.getElementById("summaryDiv")
+        summaryDiv.style.display = "block"
+        deleteUserSummeries.style.display = "none"
     })
     displaySummaryDivDOM(summaries)
     hideEachDisplay(CSS_ID_ARRAY)
     onlyDisplay(["after-login-navbar", "after-login", "display-Summary"])
+}
+
+function displaySummaryDivDOM(summariesArray){
+        let displaySummaryDiv = document.getElementById("display-Summary")
+        let summaryOl = document.getElementById("summaries-ol")
+        if (summariesArray.length === 0){
+            let summaryDiv = document.createElement("div")
+            summaryDiv.textContent = "No Summary!!"
+            displaySummaryDiv.append(summaryDiv)
+        } else{
+            while (summaryOl.firstChild) {
+                summaryOl.firstChild.remove()
+            }
+            summariesArray.forEach(summary => {
+                let summaryLi = document.createElement("li")
+                summaryLi.classList = "summaries"
+                let summaryP = document.createElement("p")
+                summaryP.innerHTML = `Guessed:${summary.guessedAddress}, Actual Address: , Points Earned: ${summary.points}`
+                summaryLi.append(summaryP)
+                summaryOl.prepend(summaryLi)
+            });
+        }
 }
 
 function deleteSummaryRquest(summariesArray){
@@ -97,47 +86,71 @@ function deleteUserPoints(){
     })
     .then(resp => resp.json())
     .then(user => {
-        console.log("UPDATED USER" ,user);
-        getUser(EMAIL)
+        T_POINTS = 0
+        updatePoints(T_POINTS)
     })
 }
 
-function displaySummaryDivDOM(summariesArray){
-    if (!CLICK_CHECK.has("clicked")){
-        CLICK_CHECK.add("clicked")
-        let displaySummaryDiv = document.getElementById("display-Summary")
-        if (summariesArray.length === 0){
-            let summaryDiv = document.createElement("div")
-            summaryDiv.textContent = "No Summary!!"
-            displaySummaryDiv.append(summaryDiv)
-        } else{
-            summariesArray.forEach(summary => {
-                let summaryDiv = document.createElement("div")
-                summaryDiv.classList = "summaries"
-                summaryDiv.textContent = "hello"
-                displaySummaryDiv.append(summaryDiv)
-            });
-        }
-    }
+function addSummaryInDatabase(summary_data){
+    fetch(SUMMARIES_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "Application/json",
+          Accept: "Application/json"
+        },
+        body: JSON.stringify({
+            user_id: USER_ID,
+            input_lat: summary_data.input_lat,
+            input_lng: summary_data.input_lng,
+            actual_lat: summary_data.actual_lat,
+            actual_lng: summary_data.actual_lng,
+            points: summary_data.points
+        })
+      })
+      .then(response => response.json())
+      .then(updatedSummary => {
+            // getUserSummary(USER_ID)
+            updateUserPoints()
+      })
 }
 
+function updatePoints(points){
+    let displayedUserPoints = document.getElementById("points")
+    displayedUserPoints.textContent = `|| Points:${points} ||`
+}
 
 function getDistanceFromLatLonInKm(lat1,lon1,lat2,lon2) {
-    var R = 6371; // Radius of the earth in km
-    var dLat = deg2rad(lat2-lat1);  // deg2rad below
-    var dLon = deg2rad(lon2-lon1); 
-    var a = 
+    let radiusOfEarthInKm = 6371;
+    let dLat = deg2rad(lat2-lat1);  // deg2rad below
+    let dLon = deg2rad(lon2-lon1); 
+    let mathCalculation = 
       Math.sin(dLat/2) * Math.sin(dLat/2) +
       Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * 
-      Math.sin(dLon/2) * Math.sin(dLon/2)
-      ; 
-    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
-    var d = R * c; // Distance in km
-    SUMMARY_DATA.points = 25000/d
-    console.log()
-  }
+      Math.sin(dLon/2) * Math.sin(dLon/2); 
+    let moreCalculation = 2 * Math.atan2(Math.sqrt(mathCalculation), Math.sqrt(1-mathCalculation)); 
+    let distanceInKm = radiusOfEarthInKm * moreCalculation;
+    SUMMARY_DATA.points = Math.ceil(25000/distanceInKm)
+}
 
-  function deg2rad(deg) {
+function deg2rad(deg) {
     return deg * (Math.PI/180)
-  }
+}
+
+function updateUserPoints () {
+    fetch(`http://localhost:3000/getUserByEmail`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "Application/json",
+          Accept: "Application/json"
+        },
+        body: JSON.stringify({
+          email: EMAIL
+        })
+    })
+    .then(response => response.json())
+    .then(user => {
+        console.log(user);
+        updatePoints(user.points)
+    })
+}
   

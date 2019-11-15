@@ -28,6 +28,7 @@ html, body {
 }
 
 #pano {
+    display: block;
     margin: auto;
     float: center;
     height: 55%;
@@ -68,6 +69,7 @@ html, body {
 }
 
 #map {
+    display: block;
     height: 30%;
     width: 60%;
     position: absolute;
@@ -94,7 +96,11 @@ html, body {
 }
 
 #answer{
+    display:none;
     position: absolute;
     right: 0px;
     bottom: 0px;
+}
+#submit-button{
+    display:none;
 }
